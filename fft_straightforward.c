@@ -20,9 +20,12 @@ static complex double *FFT_recurse( complex double *x, int N, int skip ) {
         O[k] = ( cexp( 2.0 * I * M_PI * k / N ) * O[k] );
     }
     
+    // While E[k] and O[k] are of length N/2, and X[k] is of length N, E[k] and
+    // O[k] are periodic in k with length N/2. See p.609 of Numerical Recipes
+    // in C (3rd Ed, 2007). [CL]
     for ( int k = 0; k < N / 2; k++ ) {
         X[k] = E[k] + O[k];
-        X[k + N/2] = E[k] - O[k];
+        X[k + N/2] = E[k] + O[k];
     }
     
     free( O );
